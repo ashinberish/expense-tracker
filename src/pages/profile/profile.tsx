@@ -4,7 +4,6 @@ import { toast } from "@/components/ui/use-toast";
 import { useAppStore } from "@/context";
 import { supabase } from "@/services/supabase";
 import { useState } from "react";
-import moment from "moment";
 
 import LoaderSVG from "@/assets/icons/loader.svg?react";
 
