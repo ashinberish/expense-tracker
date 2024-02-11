@@ -1,8 +1,9 @@
 import { Button } from "../ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent } from "../ui/card";
 import { DatePicker } from "../ui/datepicker";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg?react";
 import ChevronLeftIcon from "@/assets/icons/chevron-left.svg?react";
+import { Separator } from "../ui/separator";
 
 export const PersonalExpenses = () => {
     return (
@@ -16,26 +17,19 @@ export const PersonalExpenses = () => {
                     <Button variant="outline" className="w-1/5">
                         <ChevronRightIcon className="h-4 w-4" />
                     </Button>
-                </div>
-
-                <CardHeader>
-                    <CardTitle>Create project</CardTitle>
-                    <CardDescription>Deploy your new project in one-click.</CardDescription>
-                </CardHeader>
+                </div> 
                 <CardContent>
-                    <form>
-                        <div className="grid w-full items-center gap-4">
-                            <div className="w-full">
-                                <label className="block text-sm font-medium text-gray-700">Project name</label>
-                                <input type="text" className="w-full mt-1" />
-                            </div>
-                        </div>
-                    </form>
+                <div className="flex justify-between my-4">
+                     <p>Food</p>
+                     <p>$200</p>
+                </div>
+                <Separator />
+                <div className="flex justify-between my-4">
+                     <p>Grocery</p>
+                     <p>$200</p>
+                </div>
+                <Separator />
                 </CardContent>
-                <CardFooter className="flex justify-between">
-                    <Button variant="outline">Cancel</Button>
-                    <Button>Deploy</Button>
-                </CardFooter>
             </Card>
         </>
     );
