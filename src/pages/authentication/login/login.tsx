@@ -6,11 +6,15 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 
 import LoaderSVG from "@/assets/icons/loader.svg?react";
+import { useAppStore } from "@/context";
 
 export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    const state = useAppStore();
+    const { setUser } = state;
 
     const { toast } = useToast();
     const navigate = useNavigate();
@@ -27,7 +31,12 @@ export const Login = () => {
             email: email,
             password: password,
         })
+        
         if (data.session) {
+            const { data: profile } = await supabase.from('profiles').select(
+                'id, first_name, last_name, avatar_url, email, phone_number, default_currency, updated_at').eq('id', data.user.id).single()
+            //console.log('profile',profile)
+            setUser(profile)
             toast({ title: "Login successful" })
             navigate('/home')
         }

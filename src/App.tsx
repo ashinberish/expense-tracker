@@ -7,23 +7,17 @@ import { useAppStore } from "@/context"
 
 function App() {
   const state = useAppStore()
-  const { setSession, setUser } = state
+  const { setSession } = state
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
-      if(session){
-        setUser(session.user)
-      }
     })
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
-      if(session){
-        setUser(session.user)
-      }
     })
 
     return () => subscription.unsubscribe()

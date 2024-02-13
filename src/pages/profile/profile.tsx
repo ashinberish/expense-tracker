@@ -6,6 +6,7 @@ import { supabase } from "@/services/supabase";
 import { useState } from "react";
 
 import LoaderSVG from "@/assets/icons/loader.svg?react";
+import { ETCurrencyIdToName, fullNamesConcat } from "@/lib/utils";
 
 export const Profile = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +29,7 @@ export const Profile = () => {
     const settingsItems = [
         {
             settingsName: "Name",
-            settingsValue: "Ashin Berish",
+            settingsValue: fullNamesConcat(user?.first_name || "", user?.last_name || ""),
         },
         {
             settingsName: "Email",
@@ -36,11 +37,11 @@ export const Profile = () => {
         },
         {
             settingsName: "Phone",
-            settingsValue: "+91 284938372",
+            settingsValue: user?.phone_number || "",
         },
         {
             settingsName: "Currency",
-            settingsValue: "USD",
+            settingsValue: ETCurrencyIdToName(user?.default_currency || 0),
         },
     ];
 
@@ -48,7 +49,7 @@ export const Profile = () => {
         <div className="mt-20">
             <div className="w-11/12 m-auto">
                 <div className="px-4">
-                    <img alt="avatar" className="inline-block h-12 w-12 rounded-full ring-2 ring-white" src={"https://api.dicebear.com/7.x/identicon/svg"} />
+                    <img alt="avatar" className="inline-block h-12 w-12 rounded-full ring-2 ring-white" src={user?.avatar_url || 'https://api.dicebear.com/7.x/identicon/svg'} />
                 </div>
                 <div className="p-4">
                     {settingsItems.map((item, index) => (
