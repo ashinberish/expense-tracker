@@ -11,11 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import AddIcon from "@/assets/icons/plus.svg?react";
-import { supabase } from "@/services/supabase";
-import { useAppStore } from "@/context";
+// import { supabase } from "@/services/supabase";
+// import { useAppStore } from "@/context";
 
 export const AddExpenses = () => {
-    const {user} = useAppStore();
+    //const {user} = useAppStore();
 
     return (
         <Dialog>
