@@ -18,6 +18,7 @@ import { useState } from "react";
 
 import AddIcon from "@/assets/icons/plus.svg?react";
 import LoaderSVG from "@/assets/icons/loader.svg?react";
+import { Cross2Icon } from "@radix-ui/react-icons";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 
 export const AddExpenses = () => {
@@ -73,6 +74,11 @@ export const AddExpenses = () => {
     });
   };
 
+  const resetAndClose = () => {
+    expenseForm.reset();
+    setIsDialogOpen(false);
+  };
+
   return (
     <Dialog open={isDialogOpen} onOpenChange={() => setIsDialogOpen(true)}>
       <DialogTrigger asChild>
@@ -84,6 +90,13 @@ export const AddExpenses = () => {
       <DialogContent className="w-11/12">
         <DialogHeader>
           <DialogTitle>Add a Expense</DialogTitle>
+          <span
+            onClick={resetAndClose}
+            className="absolute right-4 top-4 cursor-pointer rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+          >
+            <Cross2Icon className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </span>
         </DialogHeader>
         <Form {...expenseForm}>
           <form onSubmit={expenseForm.handleSubmit(handleAddExpense)}>
