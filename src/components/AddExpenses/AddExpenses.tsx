@@ -1,58 +1,147 @@
 import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { axios } from "@/services/axios";
+import { useAppStore } from "@/context";
+import { useState } from "react";
 
 import AddIcon from "@/assets/icons/plus.svg?react";
-// import { supabase } from "@/services/supabase";
-// import { useAppStore } from "@/context";
+import LoaderSVG from "@/assets/icons/loader.svg?react";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 
 export const AddExpenses = () => {
-    //const {user} = useAppStore();
+  const { session } = useAppStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    return (
-        <Dialog>
-            <DialogTrigger asChild>
-            <Button variant="default" className="flex items-center">
-                    <AddIcon className="h-4 w-4 mr-2" />
-                    Add Expense
-                </Button>
-            </DialogTrigger>
-            <DialogContent className="w-11/12">
-                <DialogHeader>
-                    <DialogTitle>Add a Expense</DialogTitle>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div>
-                        <Label htmlFor="name">
-                            Expense Name
-                        </Label>
-                        <Input id="name" className="col-span-3" />
-                    </div>
-                    <div>
-                        <Label htmlFor="desc" className="text-right">
-                            Expense Description
-                        </Label>
-                        <Input id="desc" className="col-span-3" />
-                    </div>
-                    <div>
-                        <Label htmlFor="spend" className="text-right">
-                            Amount Spend (INR)
-                        </Label>
-                        <Input id="spend" className="col-span-3" />
-                    </div>
-                </div>
-                <DialogFooter>
-                    <Button type="submit">Add Expense</Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-    );
-}
+  const expenseFormSchema = z.object({
+    expenseName: z.string().min(2, {
+      message: "Provide a name for the expense",
+    }),
+    expenseDesc: z.string().optional(),
+    expenseAmount: z.number().min(1, {
+      message: "Provide a expense amount",
+    }),
+  });
+
+  const expenseForm = useForm<z.infer<typeof expenseFormSchema>>({
+    resolver: zodResolver(expenseFormSchema),
+    defaultValues: {
+      expenseName: "",
+      expenseDesc: "",
+      expenseAmount: 0,
+    },
+  });
+
+  const resetForm = () => {
+    expenseForm.reset();
+  };
+
+  const handleAddExpense = (values: z.infer<typeof expenseFormSchema>) => {
+    if (isLoading) return;
+
+    setIsLoading(true);
+    axios.post("expense", {
+      expense: {
+        expense_name: values.expenseName,
+        expense_desc: values.expenseDesc,
+        expense_amount: +values.expenseAmount,
+        expense_emoji: "🍔", // TODO: add emoji picker in the UI
+        expense_ts: new Date().toISOString(),
+        user_id: session?.user.id,
+        group_id: null, // TODO: future group implemenation
+        created_at: new Date().toISOString(),
+      },
+    }).then(() => {
+      setIsLoading(false);
+      resetForm();
+      setIsDialogOpen(false);
+    }).catch((err) => {
+      console.log(err);
+      setIsLoading(false);
+    });
+  };
+
+  return (
+    <Dialog open={isDialogOpen} onOpenChange={() => setIsDialogOpen(true)}>
+      <DialogTrigger asChild>
+        <Button variant="default" className="flex items-center">
+          <AddIcon className="h-4 w-4 mr-2" />
+          Add Expense
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="w-11/12">
+        <DialogHeader>
+          <DialogTitle>Add a Expense</DialogTitle>
+        </DialogHeader>
+        <Form {...expenseForm}>
+          <form onSubmit={expenseForm.handleSubmit(handleAddExpense)}>
+            <FormField
+              control={expenseForm.control}
+              name="expenseName"
+              render={({ field }) => (
+                <FormItem className="mb-2">
+                  <FormLabel>Expense Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Expense Name" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={expenseForm.control}
+              name="expenseDesc"
+              render={({ field }) => (
+                <FormItem className="mb-2">
+                  <FormLabel>Expense Description</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Expense Description" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={expenseForm.control}
+              name="expenseAmount"
+              render={({ field }) => (
+                <FormItem className="mb-2">
+                  <FormLabel>Expense Amount</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Expense Amount"
+                      {...field}
+                      onChange={(event) => {
+                        if (!isNaN(+event.target.value)) {
+                          field.onChange(+event.target.value);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <DialogFooter className="mt-4">
+              <Button type="submit">
+                {isLoading && (
+                  <LoaderSVG className="mr-2 h-4 w-4 animate-spin" />
+                )}Add Expense
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+};
