@@ -28,18 +28,22 @@ export const Profile = () => {
     
     const settingsItems = [
         {
+            id: 1,
             settingsName: "Name",
             settingsValue: fullNamesConcat(user?.first_name || "", user?.last_name || ""),
         },
         {
+            id: 2,
             settingsName: "Email",
             settingsValue: user?.email || "",
         },
         {
+            id: 3,
             settingsName: "Phone",
             settingsValue: user?.phone_number || "",
         },
         {
+            id: 4,
             settingsName: "Currency",
             settingsValue: ETCurrencyIdToName(user?.default_currency || 0),
         },
@@ -52,9 +56,9 @@ export const Profile = () => {
                     <img alt="avatar" className="inline-block h-12 w-12 rounded-full ring-2 ring-white" src={user?.avatar_url || 'https://api.dicebear.com/7.x/identicon/svg'} />
                 </div>
                 <div className="p-4">
-                    {settingsItems.map((item, index) => (
+                    {settingsItems.map((item) => (
                         <>
-                            <div key={index} className="flex justify-between my-4">
+                            <div key={item.id} className="flex justify-between my-4">
                                 <p>{item.settingsName}</p>
                                 <p>{item.settingsValue}</p>
                             </div>
