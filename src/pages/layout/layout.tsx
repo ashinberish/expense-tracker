@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, Outlet, Link, NavLink } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet, NavLink } from 'react-router-dom';
 import { Login } from '../authentication/login/login';
 import { Home } from '../home/home';
 import { useAppStore } from '@/context';
