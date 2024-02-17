@@ -141,7 +141,7 @@ export const PersonalExpenses = () => {
               <p>No expenses for this day. 🎉</p>
             </div>
           )}
-          {(data?.expenses.length != 0 && filteredExpenses.length === 0) &&(
+          {(data?.expenses.length != 0 && filteredExpenses?.length === 0) &&(
             <div className="flex justify-center items-center min-h-full">
             <p>No expenses found. 🤔</p>
           </div>
