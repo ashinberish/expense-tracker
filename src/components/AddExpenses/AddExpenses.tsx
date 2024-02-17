@@ -82,7 +82,7 @@ export const AddExpenses = () => {
   return (
     <Dialog open={isDialogOpen} onOpenChange={() => setIsDialogOpen(true)}>
       <DialogTrigger asChild>
-        <Button variant="default" className="flex items-center">
+        <Button variant="default" size="sm" className="flex items-center">
           <AddIcon className="h-4 w-4 mr-2" />
           Add Expense
         </Button>
