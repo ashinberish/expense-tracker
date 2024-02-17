@@ -11,28 +11,13 @@ import { ScrollArea } from "../ui/scroll-area";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg?react";
 import ChevronLeftIcon from "@/assets/icons/chevron-left.svg?react";
 import { Input } from "../ui/input";
-
-interface PersonalExpenseRespone {
-  total_amount: number;
-  expenses: IExpense[];
-}
-interface IExpense {
-  id?: number;
-  expense_name: string;
-  expense_desc: string | null;
-  expense_amount: number;
-  expense_emoji: string;
-  expense_ts: Date;
-  user_id: string;
-  group_id: string | null;
-  created_at: Date;
-}
+import { ExpenseType, PersonalExpenseResponeType } from "@/models/expense";
 
 export const PersonalExpenses = () => {
   const [searchKey, setSearchKey] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<Moment>(moment());
-  const [data, setData] = useState<PersonalExpenseRespone>();
-  const [filteredExpenses, setFilteredExpenses] = useState<IExpense[]>([]);
+  const [data, setData] = useState<PersonalExpenseResponeType>();
+  const [filteredExpenses, setFilteredExpenses] = useState<ExpenseType[]>([]);
 
   const changePrevDate = () => {
     setSelectedDate((o) => moment(o).subtract(1, "days"));
@@ -112,9 +97,9 @@ export const PersonalExpenses = () => {
           className="px-4 scroll-shadows"
           style={{ height: "calc(100dvh - 330px)" }}
         >
-          {filteredExpenses?.map((expense: IExpense) => (
+          {filteredExpenses?.map((expense: ExpenseType) => (
             <Fragment key={expense.id}>
-              <div className="flex items-center my-4 gap-4 relative">
+              <div className="flex items-center my-4 gap-2 relative">
                 <div className="rounded-md border w-10 h-10 flex items-center bg-slate-50 justify-center">
                   <span>
                     {expense.expense_emoji}
