@@ -14,7 +14,7 @@ export const Profile = () => {
     const { user } = state;
 
     async function signOut() {
-        console.log('signing out');
+        console.log('Signing out!');
         if (isLoading) return;
         setIsLoading(true);
         const { error } = await supabase.auth.signOut()
