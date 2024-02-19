@@ -88,7 +88,7 @@ export const PersonalExpenses = () => {
       <div className="flex justify-between items-center my-4 ">
         <div className="flex items-baseline">
           <h3 className="font-semibold text-slate-500 text-sm">
-            {data?.total_amount && `Total Spends: ₹${data?.total_amount}`}
+            {data?.total_amount != 0 && `Total Spends: ₹${data?.total_amount}`}
           </h3>
         </div>
       </div>
