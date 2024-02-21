@@ -8,18 +8,18 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { axios } from "@/services/axios";
+import { useAppStore } from "@/context";
+
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { axios } from "@/services/axios";
-import { useAppStore } from "@/context";
 import { useState } from "react";
-
 import AddIcon from "@/assets/icons/plus.svg?react";
 import LoaderSVG from "@/assets/icons/loader.svg?react";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 
 export const AddExpenses = () => {
   const { session } = useAppStore();
@@ -45,9 +45,6 @@ export const AddExpenses = () => {
     },
   });
 
-  const resetForm = () => {
-    expenseForm.reset();
-  };
 
   const handleAddExpense = (values: z.infer<typeof expenseFormSchema>) => {
     if (isLoading) return;
@@ -66,8 +63,7 @@ export const AddExpenses = () => {
       },
     }).then(() => {
       setIsLoading(false);
-      resetForm();
-      setIsDialogOpen(false);
+      resetAndClose();
     }).catch((err) => {
       console.log(err);
       setIsLoading(false);

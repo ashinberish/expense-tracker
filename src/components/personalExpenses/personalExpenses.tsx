@@ -31,11 +31,15 @@ export const PersonalExpenses = () => {
   const getExpenses = async (selected_date: Moment) => {
     const res = await axios.get(
       `expense?specificDate=${moment(selected_date).format("MM-DD-YYYY")}`,
-    )
+    ).catch(() => {
+      throw new Error("GET expenses error!");
+    });
     return res.data;
   };
 
-  const { data, isLoading, isFetched, isError } = useQuery<PersonalExpenseResponeType>({
+  const { data, isLoading, isFetched, isError } = useQuery<
+    PersonalExpenseResponeType
+  >({
     queryKey: ["expenses", selectedDate],
     queryFn: () => getExpenses(selectedDate),
   });
@@ -84,7 +88,10 @@ export const PersonalExpenses = () => {
         </div>
       </Card>
       {isError && (
-        <div className="flex justify-center items-center min-h-full" style={{ height: "calc(100dvh - 330px)" }}>
+        <div
+          className="flex justify-center items-center min-h-full"
+          style={{ height: "calc(100dvh - 330px)" }}
+        >
           <p>Something went wrong!</p>
         </div>
       )}
