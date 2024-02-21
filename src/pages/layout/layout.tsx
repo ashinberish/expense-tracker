@@ -7,6 +7,7 @@ import { Profile } from '../profile/profile';
 import UserSettings from '@/assets/icons/user-round-cog.svg?react';
 import HomeIcon from '@/assets/icons/home.svg?react';
 import clsx from 'clsx';
+import { SignUp } from '../authentication/signup/signup';
 
 export const Layout = () => {
     return (
@@ -14,6 +15,7 @@ export const Layout = () => {
             <Routes>
                 <Route path="/" element={<Navigate to="/home" />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp/>} />
                 <Route element={<ProtectedRoute />}>
                     <Route path="/home" element={<Home />} />
                     <Route path="/profile" element={<Profile />} />
